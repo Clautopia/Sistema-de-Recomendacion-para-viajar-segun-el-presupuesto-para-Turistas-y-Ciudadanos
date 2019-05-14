@@ -1,0 +1,124 @@
+﻿@model CRUD_buss.Models.clientes
+
+
+<script>
+    //visualizar los mensajes en la vista
+
+    var mensaje = '@ViewBag.mensaje';
+    if (mensaje != "")
+    {
+        alert(mensaje);
+    }
+</script>
+
+
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@*@using (Html.BeginForm("Create", "ClientesController", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Label("NOMBRE")
+                @Html.TextBoxFor(d=>d.nombre_cli, "", new { @class = "form-control" })
+            </div>
+        </div>
+    }*@
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="table">
+        <h4>CREAR CLIENTE</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nombre_cli, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "NOMBRE")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nombre_cli, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nombre_cli, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.apellidos_cli, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "APELLIDO")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.apellidos_cli, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.apellidos_cli, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.direccion_cli, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "DIREC.")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.direccion_cli, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.direccion_cli, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.dni_cli, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "DNI")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.dni_cli, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dni_cli, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.telefono_cli, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "TELEF.")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.telefono_cli, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.telefono_cli, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.usuario_cli, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "USUARIO")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.usuario_cli, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.usuario_cli, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.clave_cli, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "CLAVE")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.clave_cli, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.clave_cli, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.fecha_cli, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "FECHA DE NAC.")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fecha_cli, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.fecha_cli, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="col-md-offset-2 col-md-10">
+
+
+
+            <input type="submit" value="AGREGAR CLIENTE" class="btn btn-primary" />
+
+        </div>
+
+
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CRUD_buss.Models.empresa>
+
+@{
+    ViewBag.Title = "ListaEmpresas";
+}
+
+<h2>ListaEmpresas</h2>
+
+<div class="row">
+    <a href="~/Empresas/Create" class="btn btn-primary">NUEVO</a>
+</div>
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.codigo_emp)
+        </th>*@
+        <th>
+          PERFIL
+        </th>
+        <th>
+           NOMBRE DE EMPRESA
+        </th>
+        <th>
+            RUC.
+        </th>
+        <th>
+           DIREC.
+        </th>
+        <th>
+           TELEF.
+        </th>
+        <th>
+           VALORACION
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigo_emp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.perfil_emp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre_emp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ruck_emp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.direccion_emp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.telefono_emp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valoracion)
+        </td>
+        <td>
+            <a href="~/Empresas/Edit/@item.codigo_emp" class="btn btn-primary">EDITAR</a>
+            <a href="~/Empresas/Delete/@item.codigo_emp" class="btn btn-danger">ELIMINAR</a>
+        </td>
+    </tr>
+}
+
+</table>

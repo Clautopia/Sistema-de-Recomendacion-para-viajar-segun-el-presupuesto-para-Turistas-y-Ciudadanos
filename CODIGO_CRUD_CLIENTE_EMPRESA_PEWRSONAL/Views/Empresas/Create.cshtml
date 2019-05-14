@@ -1,0 +1,91 @@
+﻿@model CRUD_buss.Models.empresa
+
+<script>
+    //visualizar los mensajes en la vista
+
+    var mensaje = '@ViewBag.mensaje';
+    if (mensaje != "")
+    {
+        alert(mensaje);
+    }
+</script>
+
+
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>CREAR EMPRESA</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.perfil_emp, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "PERDIL")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.perfil_emp, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.perfil_emp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nombre_emp, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "NOMBRE")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nombre_emp, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nombre_emp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ruck_emp, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "RUC.")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ruck_emp, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ruck_emp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.direccion_emp, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "DIREC.")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.direccion_emp, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.direccion_emp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.telefono_emp, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "TELEF.")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.telefono_emp, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.telefono_emp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.valoracion, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "VALORACION")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.valoracion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.valoracion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+               
+                <input type="submit" value="AGREGAR EMPRESA" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

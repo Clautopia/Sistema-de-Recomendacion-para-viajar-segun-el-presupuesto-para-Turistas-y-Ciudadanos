@@ -1,0 +1,115 @@
+﻿@model IEnumerable<CRUD_buss.Models.clientes>
+
+@{
+    ViewBag.Title = "ListaClientes";
+}
+
+<h2>Lista Clientes</h2>
+
+
+<div class="row">
+    <a href="~/Clientes/Create" class="btn btn-primary">NUEVO</a>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            CODIGO
+        </th>
+        <th>
+          NOMBRE
+        </th>
+        <th>
+            APELLIDO
+        </th>
+        <th>
+           DIREC.
+        </th>
+        <th>
+            DNI
+        </th>
+        <th>
+          TELEFONO
+        </th>
+        <th>
+            USUARIO
+        </th>
+        <th>
+            CLAVE
+        </th>
+        <th>
+           FECHA
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigo_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.apellidos_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.direccion_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dni_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.telefono_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.usuario_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.clave_cli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha_cli)
+        </td>
+        <td>
+            <a href="~/Clientes/Edit/@item.codigo_cli" class="btn btn-primary">EDITAR</a>
+            <a href="~/Clientes/Delete/@item.codigo_cli" class="btn btn-danger">ELIMINAR</a>
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new {  id=item.codigo_cli  }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>*@
+    </tr>
+}
+
+</table>
+
+@*Bloque donde se
+imprime el número de
+la paginación*@
+
+
+@*<script>
+    function jsDelete(id)
+    {
+        if (confirm("SEGURO DE ELIMINAR"))
+            url = "@Url.Content("~/Clienes/Delete")" + "/"id;
+       
+
+        $.post(url, function (data)
+        {
+            if (data == "1")
+            {
+                document.location.href="@Url.Content("~/Clientes/")"
+            }else
+                        {
+                        alert("Ocurrio un ERROR");
+                        }
+
+            
+        })
+       
+    }
+</script>*@
+

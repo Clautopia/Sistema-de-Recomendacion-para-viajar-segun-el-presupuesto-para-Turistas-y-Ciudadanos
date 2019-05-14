@@ -1,0 +1,559 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="sistemaviajesbusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="clientes">
+          <Key>
+            <PropertyRef Name="codigo_cli" />
+          </Key>
+          <Property Name="codigo_cli" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_cli" Type="varchar" MaxLength="30" />
+          <Property Name="apellidos_cli" Type="varchar" MaxLength="30" />
+          <Property Name="direccion_cli" Type="varchar" MaxLength="50" />
+          <Property Name="dni_cli" Type="char" MaxLength="8" />
+          <Property Name="telefono_cli" Type="char" MaxLength="12" />
+          <Property Name="usuario_cli" Type="varchar" MaxLength="20" />
+          <Property Name="clave_cli" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_cli" Type="date" />
+        </EntityType>
+        <EntityType Name="disponibilidad">
+          <Key>
+            <PropertyRef Name="codigo_dis" />
+          </Key>
+          <Property Name="codigo_dis" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="codigo_un" Type="int" />
+          <Property Name="origen_dis" Type="varchar" MaxLength="25" />
+          <Property Name="destino_dis" Type="varchar" MaxLength="25" />
+          <Property Name="fecha_dia_dis" Type="date" />
+        </EntityType>
+        <EntityType Name="empresa">
+          <Key>
+            <PropertyRef Name="codigo_emp" />
+          </Key>
+          <Property Name="codigo_emp" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="perfil_emp" Type="varchar" MaxLength="200" />
+          <Property Name="nombre_emp" Type="varchar" MaxLength="30" />
+          <Property Name="ruck_emp" Type="varchar" MaxLength="30" />
+          <Property Name="direccion_emp" Type="varchar" MaxLength="30" />
+          <Property Name="telefono_emp" Type="varchar" MaxLength="30" />
+          <Property Name="valoracion" Type="int" />
+        </EntityType>
+        <EntityType Name="personal">
+          <Key>
+            <PropertyRef Name="codigo_per" />
+          </Key>
+          <Property Name="codigo_per" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_per" Type="varchar" MaxLength="30" />
+          <Property Name="apellidos_per" Type="varchar" MaxLength="30" />
+          <Property Name="direccion_per" Type="varchar" MaxLength="50" />
+          <Property Name="dni_per" Type="char" MaxLength="8" />
+          <Property Name="telefono_per" Type="char" MaxLength="12" />
+          <Property Name="usuario_per" Type="varchar" MaxLength="20" />
+          <Property Name="clave_per" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_per" Type="date" />
+        </EntityType>
+        <EntityType Name="reservar">
+          <Key>
+            <PropertyRef Name="codigo_res" />
+          </Key>
+          <Property Name="codigo_res" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="codigo_bus" Type="int" />
+          <Property Name="codigo_cl" Type="int" />
+          <Property Name="estado_res" Type="varchar" MaxLength="25" />
+          <Property Name="fecha_res" Type="date" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="unidades">
+          <Key>
+            <PropertyRef Name="codigo_uni" />
+          </Key>
+          <Property Name="codigo_uni" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="codigo_em" Type="int" />
+          <Property Name="nombre_uni" Type="varchar" MaxLength="30" />
+          <Property Name="aciento_uni" Type="int" />
+          <Property Name="estado_uni" Type="varchar" MaxLength="20" />
+          <Property Name="hora_dis" Type="time" Precision="7" />
+          <Property Name="tarifa_uni" Type="float" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'sistemaviajesbus.dbo.viajes' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="viajes">
+          <Key>
+            <PropertyRef Name="cod_uni" />
+            <PropertyRef Name="cod_disp" />
+            <PropertyRef Name="descripcion" />
+          </Key>
+          <Property Name="cod_viajes" Type="int" />
+          <Property Name="cod_uni" Type="int" Nullable="false" />
+          <Property Name="cod_disp" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="nchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_codigo_bus">
+          <End Role="unidades" Type="Self.unidades" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservar" Type="Self.reservar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unidades">
+              <PropertyRef Name="codigo_uni" />
+            </Principal>
+            <Dependent Role="reservar">
+              <PropertyRef Name="codigo_bus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_codigo_cl">
+          <End Role="clientes" Type="Self.clientes" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservar" Type="Self.reservar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientes">
+              <PropertyRef Name="codigo_cli" />
+            </Principal>
+            <Dependent Role="reservar">
+              <PropertyRef Name="codigo_cl" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_codigo_em">
+          <End Role="empresa" Type="Self.empresa" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="unidades" Type="Self.unidades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="codigo_emp" />
+            </Principal>
+            <Dependent Role="unidades">
+              <PropertyRef Name="codigo_em" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_viajes_dispo">
+          <End Role="disponibilidad" Type="Self.disponibilidad" Multiplicity="1" />
+          <End Role="viajes" Type="Self.viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="disponibilidad">
+              <PropertyRef Name="codigo_dis" />
+            </Principal>
+            <Dependent Role="viajes">
+              <PropertyRef Name="cod_disp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_viajes_unidad">
+          <End Role="unidades" Type="Self.unidades" Multiplicity="1" />
+          <End Role="viajes" Type="Self.viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unidades">
+              <PropertyRef Name="codigo_uni" />
+            </Principal>
+            <Dependent Role="viajes">
+              <PropertyRef Name="cod_uni" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="inserta_clientes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre_cli" Type="varchar" Mode="In" />
+          <Parameter Name="apellidos_cli" Type="varchar" Mode="In" />
+          <Parameter Name="direccion_cli" Type="varchar" Mode="In" />
+          <Parameter Name="dni_cli" Type="char" Mode="In" />
+          <Parameter Name="telefono_cli" Type="char" Mode="In" />
+          <Parameter Name="usuario_cli" Type="varchar" Mode="In" />
+          <Parameter Name="clave_cli" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_cli" Type="date" Mode="In" />
+        </Function>
+        <EntityContainer Name="sistemaviajesbusModelStoreContainer">
+          <EntitySet Name="clientes" EntityType="Self.clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="disponibilidad" EntityType="Self.disponibilidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="empresa" EntityType="Self.empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="personal" EntityType="Self.personal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reservar" EntityType="Self.reservar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="unidades" EntityType="Self.unidades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viajes" EntityType="Self.viajes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [viajes].[cod_viajes] AS [cod_viajes], 
+    [viajes].[cod_uni] AS [cod_uni], 
+    [viajes].[cod_disp] AS [cod_disp], 
+    [viajes].[descripcion] AS [descripcion]
+    FROM [dbo].[viajes] AS [viajes]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_codigo_bus" Association="Self.fk_codigo_bus">
+            <End Role="unidades" EntitySet="unidades" />
+            <End Role="reservar" EntitySet="reservar" />
+          </AssociationSet>
+          <AssociationSet Name="fk_codigo_cl" Association="Self.fk_codigo_cl">
+            <End Role="clientes" EntitySet="clientes" />
+            <End Role="reservar" EntitySet="reservar" />
+          </AssociationSet>
+          <AssociationSet Name="fk_codigo_em" Association="Self.fk_codigo_em">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="unidades" EntitySet="unidades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_viajes_dispo" Association="Self.FK_viajes_dispo">
+            <End Role="disponibilidad" EntitySet="disponibilidad" />
+            <End Role="viajes" EntitySet="viajes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_viajes_unidad" Association="Self.FK_viajes_unidad">
+            <End Role="unidades" EntitySet="unidades" />
+            <End Role="viajes" EntitySet="viajes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="sistemaviajesbusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="clientes">
+          <Key>
+            <PropertyRef Name="codigo_cli" />
+          </Key>
+          <Property Name="codigo_cli" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_cli" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="apellidos_cli" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="direccion_cli" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="dni_cli" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="telefono_cli" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="usuario_cli" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="clave_cli" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_cli" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="reservar" Relationship="Self.fk_codigo_cl" FromRole="clientes" ToRole="reservar" />
+        </EntityType>
+        <EntityType Name="disponibilidad">
+          <Key>
+            <PropertyRef Name="codigo_dis" />
+          </Key>
+          <Property Name="codigo_dis" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="codigo_un" Type="Int32" />
+          <Property Name="origen_dis" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="destino_dis" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_dia_dis" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="viajes" Relationship="Self.FK_viajes_dispo" FromRole="disponibilidad" ToRole="viajes" />
+        </EntityType>
+        <EntityType Name="empresa">
+          <Key>
+            <PropertyRef Name="codigo_emp" />
+          </Key>
+          <Property Name="codigo_emp" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="perfil_emp" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="nombre_emp" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ruck_emp" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="direccion_emp" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="telefono_emp" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="valoracion" Type="Int32" />
+          <NavigationProperty Name="unidades" Relationship="Self.fk_codigo_em" FromRole="empresa" ToRole="unidades" />
+        </EntityType>
+        <EntityType Name="personal">
+          <Key>
+            <PropertyRef Name="codigo_per" />
+          </Key>
+          <Property Name="codigo_per" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_per" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="apellidos_per" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="direccion_per" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="dni_per" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="telefono_per" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="usuario_per" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="clave_per" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_per" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="reservar">
+          <Key>
+            <PropertyRef Name="codigo_res" />
+          </Key>
+          <Property Name="codigo_res" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="codigo_bus" Type="Int32" />
+          <Property Name="codigo_cl" Type="Int32" />
+          <Property Name="estado_res" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_res" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="clientes" Relationship="Self.fk_codigo_cl" FromRole="reservar" ToRole="clientes" />
+          <NavigationProperty Name="unidades" Relationship="Self.fk_codigo_bus" FromRole="reservar" ToRole="unidades" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="unidades">
+          <Key>
+            <PropertyRef Name="codigo_uni" />
+          </Key>
+          <Property Name="codigo_uni" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="codigo_em" Type="Int32" />
+          <Property Name="nombre_uni" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="aciento_uni" Type="Int32" />
+          <Property Name="estado_uni" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="hora_dis" Type="Time" Precision="7" />
+          <Property Name="tarifa_uni" Type="Double" />
+          <NavigationProperty Name="empresa" Relationship="Self.fk_codigo_em" FromRole="unidades" ToRole="empresa" />
+          <NavigationProperty Name="reservar" Relationship="Self.fk_codigo_bus" FromRole="unidades" ToRole="reservar" />
+          <NavigationProperty Name="viajes" Relationship="Self.FK_viajes_unidad" FromRole="unidades" ToRole="viajes" />
+        </EntityType>
+        <EntityType Name="viajes">
+          <Key>
+            <PropertyRef Name="cod_uni" />
+            <PropertyRef Name="cod_disp" />
+            <PropertyRef Name="descripcion" />
+          </Key>
+          <Property Name="cod_viajes" Type="Int32" />
+          <Property Name="cod_uni" Type="Int32" Nullable="false" />
+          <Property Name="cod_disp" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="150" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="disponibilidad" Relationship="Self.FK_viajes_dispo" FromRole="viajes" ToRole="disponibilidad" />
+          <NavigationProperty Name="unidades" Relationship="Self.FK_viajes_unidad" FromRole="viajes" ToRole="unidades" />
+        </EntityType>
+        <Association Name="fk_codigo_cl">
+          <End Role="clientes" Type="Self.clientes" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservar" Type="Self.reservar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientes">
+              <PropertyRef Name="codigo_cli" />
+            </Principal>
+            <Dependent Role="reservar">
+              <PropertyRef Name="codigo_cl" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_viajes_dispo">
+          <End Role="disponibilidad" Type="Self.disponibilidad" Multiplicity="1" />
+          <End Role="viajes" Type="Self.viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="disponibilidad">
+              <PropertyRef Name="codigo_dis" />
+            </Principal>
+            <Dependent Role="viajes">
+              <PropertyRef Name="cod_disp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_codigo_em">
+          <End Role="empresa" Type="Self.empresa" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="unidades" Type="Self.unidades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="codigo_emp" />
+            </Principal>
+            <Dependent Role="unidades">
+              <PropertyRef Name="codigo_em" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_codigo_bus">
+          <End Role="unidades" Type="Self.unidades" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservar" Type="Self.reservar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unidades">
+              <PropertyRef Name="codigo_uni" />
+            </Principal>
+            <Dependent Role="reservar">
+              <PropertyRef Name="codigo_bus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_viajes_unidad">
+          <End Role="unidades" Type="Self.unidades" Multiplicity="1" />
+          <End Role="viajes" Type="Self.viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unidades">
+              <PropertyRef Name="codigo_uni" />
+            </Principal>
+            <Dependent Role="viajes">
+              <PropertyRef Name="cod_uni" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="sistemaviajesbusEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="clientes" EntityType="Self.clientes" />
+          <EntitySet Name="disponibilidad" EntityType="Self.disponibilidad" />
+          <EntitySet Name="empresa" EntityType="Self.empresa" />
+          <EntitySet Name="personal" EntityType="Self.personal" />
+          <EntitySet Name="reservar" EntityType="Self.reservar" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="unidades" EntityType="Self.unidades" />
+          <EntitySet Name="viajes" EntityType="Self.viajes" />
+          <AssociationSet Name="fk_codigo_cl" Association="Self.fk_codigo_cl">
+            <End Role="clientes" EntitySet="clientes" />
+            <End Role="reservar" EntitySet="reservar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_viajes_dispo" Association="Self.FK_viajes_dispo">
+            <End Role="disponibilidad" EntitySet="disponibilidad" />
+            <End Role="viajes" EntitySet="viajes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_codigo_em" Association="Self.fk_codigo_em">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="unidades" EntitySet="unidades" />
+          </AssociationSet>
+          <AssociationSet Name="fk_codigo_bus" Association="Self.fk_codigo_bus">
+            <End Role="unidades" EntitySet="unidades" />
+            <End Role="reservar" EntitySet="reservar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_viajes_unidad" Association="Self.FK_viajes_unidad">
+            <End Role="unidades" EntitySet="unidades" />
+            <End Role="viajes" EntitySet="viajes" />
+          </AssociationSet>
+          <FunctionImport Name="inserta_clientes">
+            <Parameter Name="nombre_cli" Mode="In" Type="String" />
+            <Parameter Name="apellidos_cli" Mode="In" Type="String" />
+            <Parameter Name="direccion_cli" Mode="In" Type="String" />
+            <Parameter Name="dni_cli" Mode="In" Type="String" />
+            <Parameter Name="telefono_cli" Mode="In" Type="String" />
+            <Parameter Name="usuario_cli" Mode="In" Type="String" />
+            <Parameter Name="clave_cli" Mode="In" Type="String" />
+            <Parameter Name="fecha_cli" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="sistemaviajesbusModelStoreContainer" CdmEntityContainer="sistemaviajesbusEntities">
+          <EntitySetMapping Name="clientes">
+            <EntityTypeMapping TypeName="sistemaviajesbusModel.clientes">
+              <MappingFragment StoreEntitySet="clientes">
+                <ScalarProperty Name="codigo_cli" ColumnName="codigo_cli" />
+                <ScalarProperty Name="nombre_cli" ColumnName="nombre_cli" />
+                <ScalarProperty Name="apellidos_cli" ColumnName="apellidos_cli" />
+                <ScalarProperty Name="direccion_cli" ColumnName="direccion_cli" />
+                <ScalarProperty Name="dni_cli" ColumnName="dni_cli" />
+                <ScalarProperty Name="telefono_cli" ColumnName="telefono_cli" />
+                <ScalarProperty Name="usuario_cli" ColumnName="usuario_cli" />
+                <ScalarProperty Name="clave_cli" ColumnName="clave_cli" />
+                <ScalarProperty Name="fecha_cli" ColumnName="fecha_cli" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="disponibilidad">
+            <EntityTypeMapping TypeName="sistemaviajesbusModel.disponibilidad">
+              <MappingFragment StoreEntitySet="disponibilidad">
+                <ScalarProperty Name="codigo_dis" ColumnName="codigo_dis" />
+                <ScalarProperty Name="codigo_un" ColumnName="codigo_un" />
+                <ScalarProperty Name="origen_dis" ColumnName="origen_dis" />
+                <ScalarProperty Name="destino_dis" ColumnName="destino_dis" />
+                <ScalarProperty Name="fecha_dia_dis" ColumnName="fecha_dia_dis" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="empresa">
+            <EntityTypeMapping TypeName="sistemaviajesbusModel.empresa">
+              <MappingFragment StoreEntitySet="empresa">
+                <ScalarProperty Name="codigo_emp" ColumnName="codigo_emp" />
+                <ScalarProperty Name="perfil_emp" ColumnName="perfil_emp" />
+                <ScalarProperty Name="nombre_emp" ColumnName="nombre_emp" />
+                <ScalarProperty Name="ruck_emp" ColumnName="ruck_emp" />
+                <ScalarProperty Name="direccion_emp" ColumnName="direccion_emp" />
+                <ScalarProperty Name="telefono_emp" ColumnName="telefono_emp" />
+                <ScalarProperty Name="valoracion" ColumnName="valoracion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="personal">
+            <EntityTypeMapping TypeName="sistemaviajesbusModel.personal">
+              <MappingFragment StoreEntitySet="personal">
+                <ScalarProperty Name="codigo_per" ColumnName="codigo_per" />
+                <ScalarProperty Name="nombre_per" ColumnName="nombre_per" />
+                <ScalarProperty Name="apellidos_per" ColumnName="apellidos_per" />
+                <ScalarProperty Name="direccion_per" ColumnName="direccion_per" />
+                <ScalarProperty Name="dni_per" ColumnName="dni_per" />
+                <ScalarProperty Name="telefono_per" ColumnName="telefono_per" />
+                <ScalarProperty Name="usuario_per" ColumnName="usuario_per" />
+                <ScalarProperty Name="clave_per" ColumnName="clave_per" />
+                <ScalarProperty Name="fecha_per" ColumnName="fecha_per" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reservar">
+            <EntityTypeMapping TypeName="sistemaviajesbusModel.reservar">
+              <MappingFragment StoreEntitySet="reservar">
+                <ScalarProperty Name="codigo_res" ColumnName="codigo_res" />
+                <ScalarProperty Name="codigo_bus" ColumnName="codigo_bus" />
+                <ScalarProperty Name="codigo_cl" ColumnName="codigo_cl" />
+                <ScalarProperty Name="estado_res" ColumnName="estado_res" />
+                <ScalarProperty Name="fecha_res" ColumnName="fecha_res" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="sistemaviajesbusModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="unidades">
+            <EntityTypeMapping TypeName="sistemaviajesbusModel.unidades">
+              <MappingFragment StoreEntitySet="unidades">
+                <ScalarProperty Name="codigo_uni" ColumnName="codigo_uni" />
+                <ScalarProperty Name="codigo_em" ColumnName="codigo_em" />
+                <ScalarProperty Name="nombre_uni" ColumnName="nombre_uni" />
+                <ScalarProperty Name="aciento_uni" ColumnName="aciento_uni" />
+                <ScalarProperty Name="estado_uni" ColumnName="estado_uni" />
+                <ScalarProperty Name="hora_dis" ColumnName="hora_dis" />
+                <ScalarProperty Name="tarifa_uni" ColumnName="tarifa_uni" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viajes">
+            <EntityTypeMapping TypeName="sistemaviajesbusModel.viajes">
+              <MappingFragment StoreEntitySet="viajes">
+                <ScalarProperty Name="cod_viajes" ColumnName="cod_viajes" />
+                <ScalarProperty Name="cod_uni" ColumnName="cod_uni" />
+                <ScalarProperty Name="cod_disp" ColumnName="cod_disp" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="inserta_clientes" FunctionName="sistemaviajesbusModel.Store.inserta_clientes" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
